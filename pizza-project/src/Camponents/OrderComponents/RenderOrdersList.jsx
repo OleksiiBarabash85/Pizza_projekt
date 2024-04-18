@@ -10,7 +10,6 @@ function RenderOrdersList(){
     const navigate = useNavigate();
 const ordersList = useSelector((state)=>state.orderSlice.orderDataState);
 const handleOrderDetails = (id)=>{
-    console.log(id)
     dispatch(getOrdersDetails(id))
     navigate('/order-details')
 }

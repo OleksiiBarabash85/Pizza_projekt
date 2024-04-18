@@ -6,7 +6,6 @@ function GetOrdersByStatus(){
     const dispatch = useDispatch()
     const handleStatusselect = (event)=>{
         const value = event.target.value;
-        console.log(value)
         dispatch(getOrdersByStatus(value))
     }
 

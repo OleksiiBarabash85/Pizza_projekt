@@ -25,8 +25,7 @@ function AdminNavBar(){
                 <OptGroup label = 'manegment-statistics'/>
                 <Option value = 'standart-pizza-list' onSelect={handleChange}></Option>
                 <Option value = 'add-pizza' onSelect={handleChange}></Option>
-                <Option value = 'ingredients-list' onSelect={handleChange}></Option>
-                
+                <Option value = 'ingredients-list' onSelect={handleChange}></Option>          
             </Select>   
 
         </div>

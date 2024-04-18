@@ -39,21 +39,48 @@ export const getOrdersForPeriod = createAsyncThunk(
 )
 export const getOrdersDetails = createAsyncThunk(
   'getOrdersDetails/getOrdersDetails',
-  async(id)=>{
+  async (id, thunkAPI) => {
+    try {
+      const token = getTokenFromLocalStorage();
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const orderResponse = await axios.get(`${BASE_URL}order/${id}`, config);
+      const orderData = orderResponse.data;
+      const promises = orderData.pizzaIdToCount.map(async (item) => {
+        const response = await axios.get(`${BASE_URL}pizza/getPizza/${item.pizzaId}`, config);
+        const resultData = response.data;
+        if(item.pizzaId===resultData.id){
+          resultData.count = item.count
+        }
+        return resultData;
+      });
+      const results = await Promise.all(promises);
+      return { orderData, results };
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+export const updateOrderStatus = createAsyncThunk(
+  'updateOrderStatus/updateOrderStatus',
+  async({id,value})=>{
     try{
       const token = getTokenFromLocalStorage();
       const config = {
-        headers:{
-          Authorization:`Bearer ${token}`,
-        }
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       };
-      const response = await axios.get(`${BASE_URL}order/${id}`,config)
+      const response = await axios.patch(`${BASE_URL}order/${id}/status?status=${value}`,null,config)
       return response.data;
     }catch(error){
       throw error;
     }
   }
-)
+);
 
 const orderReqestSlice = createSlice({
     name:'orderReqest',
